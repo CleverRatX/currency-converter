@@ -1,0 +1,53 @@
+$page-background: #ebf4fb;
+$panel-inline-size: 410px;
+
+.page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  min-block-size: 100vh;
+  padding-block: 40px;
+  padding-inline: 20px;
+
+  background: $page-background;
+}
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px 169px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 21px;
+  align-items: flex-start;
+
+  inline-size: $panel-inline-size;
+  max-inline-size: 100%;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  inline-size: 100%;
+}
+
+.visually-hidden {
+  position: absolute;
+
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+
+  border: 0;
+
+  white-space: nowrap;
+
+  clip-path: inset(50%);
+}
