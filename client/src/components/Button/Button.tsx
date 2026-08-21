@@ -4,12 +4,12 @@ import styles from './Button.module.scss';
 
 type ButtonProps = {
   children: ReactNode;
-  variant?: 'primary' | 'danger';
+  kind?: 'primary' | 'danger';
 };
 
-export const Button = ({ children, variant = 'primary' }: ButtonProps) => {
+export const Button = ({ children, kind = 'primary' }: ButtonProps) => {
   return (
-    <button type="button" className={styles[variant]}>
+    <button type="button" className={styles[kind]}>
       {children}
     </button>
   );

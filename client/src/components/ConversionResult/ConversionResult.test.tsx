@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { getCurrency } from '../../data/currencies';
 import { ConversionResult } from './ConversionResult';
 
-test('показывает исходную сумму, результат и время курса', () => {
+test('renders the source amount, the converted amount and the rate timestamp', () => {
   render(
     <ConversionResult
       amount="1"

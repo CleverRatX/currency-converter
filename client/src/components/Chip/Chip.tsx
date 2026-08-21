@@ -9,7 +9,7 @@ type ChipProps = {
 
 export const Chip = ({ children, isActive = false }: ChipProps) => {
   return (
-    <button type="button" className={isActive ? styles.active : styles.chip} aria-pressed={isActive}>
+    <button type="button" className={isActive ? styles.active : styles.inactive} aria-pressed={isActive}>
       {children}
     </button>
   );

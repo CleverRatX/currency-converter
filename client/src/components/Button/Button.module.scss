@@ -1,9 +1,7 @@
 $button-min-inline-size: 200px;
 $button-block-size: 50px;
 
-.button {
-  box-sizing: border-box;
-
+@mixin button-base {
   display: inline-flex;
   gap: 10px;
   justify-content: center;
@@ -27,11 +25,13 @@ $button-block-size: 50px;
 }
 
 .primary {
-  composes: button;
+  @include button-base();
+
   background: #3f66bf;
 }
 
 .danger {
-  composes: button;
+  @include button-base();
+
   background: #fa3a3a;
 }

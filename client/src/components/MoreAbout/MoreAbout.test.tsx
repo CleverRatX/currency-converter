@@ -8,27 +8,27 @@ const jpy = getCurrency('JPY');
 const usd = getCurrency('USD');
 const eur = getCurrency('EUR');
 
-test('показывает кнопку с выбранной валютной парой', () => {
+test('renders a button with the selected currency pair', () => {
   render(<MoreAbout currencies={[pln, jpy]} />);
 
   expect(screen.getByRole('button', { name: /PLN\/JPY: about/ })).toBeInTheDocument();
 });
 
-test('показывает название, код и символ каждой валюты пары', () => {
+test('renders the title, the code and the symbol of each currency in the pair', () => {
   render(<MoreAbout currencies={[pln, jpy]} />);
 
   expect(screen.getByRole('heading', { name: 'Polish zloty - PLN - zł' })).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Japanese yen - JPY - ¥' })).toBeInTheDocument();
 });
 
-test('показывает описание каждой валюты пары', () => {
+test('renders the description of each currency in the pair', () => {
   render(<MoreAbout currencies={[pln, jpy]} />);
 
   expect(screen.getByText(pln.description)).toBeInTheDocument();
   expect(screen.getByText(jpy.description)).toBeInTheDocument();
 });
 
-test('для другой пары показывает описания этой пары', () => {
+test('renders the descriptions of another pair when that pair is given', () => {
   render(<MoreAbout currencies={[usd, eur]} />);
 
   expect(screen.getByRole('button', { name: /USD\/EUR: about/ })).toBeInTheDocument();

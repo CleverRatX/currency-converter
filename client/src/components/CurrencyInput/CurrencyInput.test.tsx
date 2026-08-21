@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { currencies } from '../../data/currencies';
 import { CurrencyInput } from './CurrencyInput';
 
-test('показывает переданную сумму', () => {
+test('renders the given amount', () => {
   render(
     <CurrencyInput
       amountLabel="Сколько отдаёте"
@@ -17,7 +17,7 @@ test('показывает переданную сумму', () => {
   expect(screen.getByLabelText('Сколько отдаёте')).toHaveValue('1');
 });
 
-test('показывает выбранную валюту', () => {
+test('renders the selected currency', () => {
   render(
     <CurrencyInput
       amountLabel="Сколько отдаёте"
@@ -31,7 +31,7 @@ test('показывает выбранную валюту', () => {
   expect(screen.getByLabelText('Валюта, которую отдаёте')).toHaveValue('PLN');
 });
 
-test('показывает в списке все переданные валюты', () => {
+test('renders every given currency as an option', () => {
   render(
     <CurrencyInput
       amountLabel="Сколько отдаёте"
@@ -47,7 +47,7 @@ test('показывает в списке все переданные валю�
   expect(options.map((option) => option.textContent)).toEqual(currencies.map((currency) => currency.code));
 });
 
-test('ничего не зашито внутрь: с другими props показывает другое', () => {
+test('renders different values when different props are given', () => {
   render(
     <CurrencyInput
       amountLabel="Сколько получаете"
