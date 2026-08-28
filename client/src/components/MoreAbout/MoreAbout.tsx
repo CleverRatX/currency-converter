@@ -3,17 +3,16 @@ import { CurrencyDescription } from '../CurrencyDescription/CurrencyDescription'
 import styles from './MoreAbout.module.scss';
 
 type MoreAboutProps = {
-  currencies: Currency[];
+  fromCurrency: Currency;
+  toCurrency: Currency;
 };
 
-export const MoreAbout = ({ currencies }: MoreAboutProps) => {
-  const pairLabel = currencies.map((currency) => currency.code).join('/');
-
+export const MoreAbout = ({ fromCurrency, toCurrency }: MoreAboutProps) => {
   return (
     <section className={styles.about}>
       <div className={styles.header}>
         <button type="button" className={styles.toggle} aria-expanded="true">
-          {`${pairLabel}: about`}
+          {`${fromCurrency.code}/${toCurrency.code}: about`}
 
           <svg className={styles.arrow} viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
             <path
@@ -31,9 +30,8 @@ export const MoreAbout = ({ currencies }: MoreAboutProps) => {
       </div>
 
       <div className={styles.descriptions}>
-        {currencies.map((currency) => (
-          <CurrencyDescription key={currency.code} currency={currency} />
-        ))}
+        <CurrencyDescription currency={fromCurrency} />
+        <CurrencyDescription currency={toCurrency} />
       </div>
     </section>
   );

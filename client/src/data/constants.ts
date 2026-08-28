@@ -3,7 +3,7 @@ export const conversion = {
   fromCode: 'PLN',
   convertedAmount: '0.99',
   toCode: 'JPY',
-  updatedAt: 'Fri, 05 Apr 2026 10:35 UTC'
+  updatedAt: new Date('2026-04-03T10:35:00Z')
 };
 
 export const savedFilters = ['PLN / CAD', 'PLN / JPY'];

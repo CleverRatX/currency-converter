@@ -7,7 +7,7 @@ import { FilterActions } from './components/FilterActions/FilterActions';
 import { MoreAbout } from './components/MoreAbout/MoreAbout';
 import { RateChart } from './components/RateChart/RateChart';
 import { SavedFilters } from './components/SavedFilters/SavedFilters';
-import { activeChartRange, activeFilter, chartRanges, conversion, savedFilters } from './data/converter';
+import { activeChartRange, activeFilter, chartRanges, conversion, savedFilters } from './data/constants';
 import { currencies, getCurrency } from './data/currencies';
 
 export const App = () => {
@@ -23,9 +23,9 @@ export const App = () => {
           <div className={styles.panel}>
             <ConversionResult
               amount={conversion.amount}
-              fromCurrency={fromCurrency}
+              fromCurrencyTitle={fromCurrency.title}
               convertedAmount={conversion.convertedAmount}
-              toCurrency={toCurrency}
+              toCurrencyTitle={toCurrency.title}
               updatedAt={conversion.updatedAt}
             />
 
@@ -60,7 +60,7 @@ export const App = () => {
           />
         </div>
 
-        <MoreAbout currencies={[fromCurrency, toCurrency]} />
+        <MoreAbout fromCurrency={fromCurrency} toCurrency={toCurrency} />
       </ConverterCard>
     </main>
   );

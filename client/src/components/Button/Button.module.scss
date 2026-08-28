@@ -3,7 +3,6 @@ $button-block-size: 50px;
 
 @mixin button-base {
   display: inline-flex;
-  gap: 10px;
   justify-content: center;
   align-items: center;
 
@@ -19,7 +18,6 @@ $button-block-size: 50px;
   font-size: 22px;
   font-weight: 700;
   line-height: 27px;
-  text-align: center;
 
   cursor: pointer;
 }

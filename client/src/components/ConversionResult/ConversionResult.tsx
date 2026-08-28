@@ -1,26 +1,37 @@
-import type { Currency } from '../../types/currency';
 import styles from './ConversionResult.module.scss';
 
 type ConversionResultProps = {
   amount: string;
-  fromCurrency: Currency;
+  fromCurrencyTitle: string;
   convertedAmount: string;
-  toCurrency: Currency;
-  updatedAt: string;
+  toCurrencyTitle: string;
+  updatedAt: Date;
 };
+
+const dateTimeFormatter = new Intl.DateTimeFormat('en-GB', {
+  weekday: 'short',
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+  hourCycle: 'h23',
+  timeZone: 'UTC',
+  timeZoneName: 'short'
+});
 
 export const ConversionResult = ({
   amount,
-  fromCurrency,
+  fromCurrencyTitle,
   convertedAmount,
-  toCurrency,
+  toCurrencyTitle,
   updatedAt
 }: ConversionResultProps) => {
   return (
     <div className={styles.result}>
-      <p className={styles.source}>{`${amount} ${fromCurrency.title} is`}</p>
-      <p className={styles.converted}>{`${convertedAmount} ${toCurrency.title}`}</p>
-      <p className={styles.updated}>{updatedAt}</p>
+      <p className={styles.source}>{`${amount} ${fromCurrencyTitle} is`}</p>
+      <p className={styles.converted}>{`${convertedAmount} ${toCurrencyTitle}`}</p>
+      <p className={styles.updated}>{dateTimeFormatter.format(updatedAt)}</p>
     </div>
   );
 };

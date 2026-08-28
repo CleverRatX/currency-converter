@@ -7,6 +7,7 @@ test('renders every saved filter', () => {
 
   expect(screen.getAllByRole('button')).toHaveLength(2);
   expect(screen.getByRole('button', { name: 'PLN / CAD' })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'PLN / JPY' })).toBeInTheDocument();
 });
 
 test('highlights the active filter', () => {
