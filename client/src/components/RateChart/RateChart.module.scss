@@ -1,0 +1,25 @@
+$chart-inline-size: 565px;
+
+.chart {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
+  inline-size: $chart-inline-size;
+  max-inline-size: 100%;
+}
+
+.ranges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  list-style: none;
+
+  margin: 0;
+  padding: 0;
+}
+
+.image {
+  inline-size: 100%;
+  block-size: auto;
+}

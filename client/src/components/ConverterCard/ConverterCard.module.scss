@@ -1,0 +1,17 @@
+$card-inline-size: 1258px;
+$card-block-size: 786px;
+$card-padding: 41px;
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  inline-size: $card-inline-size;
+  max-inline-size: 100%;
+  min-block-size: $card-block-size;
+  padding: $card-padding;
+
+  background: #fff;
+  border-radius: 30px;
+}

@@ -1,0 +1,35 @@
+$button-min-inline-size: 200px;
+$button-block-size: 50px;
+
+@mixin button-base {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  min-inline-size: $button-min-inline-size;
+  block-size: $button-block-size;
+  padding-inline: 10px;
+
+  border: none;
+  border-radius: 10px;
+
+  color: #fff;
+  font: inherit;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 27px;
+
+  cursor: pointer;
+}
+
+.primary {
+  @include button-base();
+
+  background: #3f66bf;
+}
+
+.danger {
+  @include button-base();
+
+  background: #fa3a3a;
+}
