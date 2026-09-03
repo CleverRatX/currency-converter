@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import chartImage from './assets/chart.png';
 import styles from './App.module.scss';
 import { ConversionResult } from './components/ConversionResult/ConversionResult';
@@ -7,12 +9,42 @@ import { FilterActions } from './components/FilterActions/FilterActions';
 import { MoreAbout } from './components/MoreAbout/MoreAbout';
 import { RateChart } from './components/RateChart/RateChart';
 import { SavedFilters } from './components/SavedFilters/SavedFilters';
-import { activeChartRange, activeFilter, chartRanges, conversion, savedFilters } from './data/constants';
-import { currencies, getCurrency } from './data/currencies';
+import { SwapButton } from './components/SwapButton/SwapButton';
+import {
+  activeChartRange,
+  activeFilter,
+  chartRanges,
+  defaultAmount,
+  defaultFromCode,
+  defaultToCode,
+  savedFilters
+} from './data/constants';
+import { currencies } from './mocks/currencies';
+import { priceChanges } from './mocks/priceChanges';
+import { convertAmount, isAmountInputValid } from './utils/amount';
+import { getAvailableCurrencies, getCurrency, getPriceChange } from './utils/currency';
 
 export const App = () => {
-  const fromCurrency = getCurrency(conversion.fromCode);
-  const toCurrency = getCurrency(conversion.toCode);
+  const [amount, setAmount] = useState(defaultAmount);
+  const [fromCode, setFromCode] = useState(defaultFromCode);
+  const [toCode, setToCode] = useState(defaultToCode);
+
+  const fromCurrency = getCurrency(currencies, fromCode);
+  const toCurrency = getCurrency(currencies, toCode);
+
+  const priceChange = getPriceChange(priceChanges, fromCode, toCode);
+  const convertedAmount = convertAmount(amount, priceChange.price);
+
+  const handleAmountChange = (nextAmount: string) => {
+    if (isAmountInputValid(nextAmount)) {
+      setAmount(nextAmount);
+    }
+  };
+
+  const handleSwap = () => {
+    setFromCode(toCode);
+    setToCode(fromCode);
+  };
 
   return (
     <main className={styles.page}>
@@ -22,28 +54,35 @@ export const App = () => {
         <div className={styles.top}>
           <div className={styles.panel}>
             <ConversionResult
-              amount={conversion.amount}
-              fromCurrencyTitle={fromCurrency.title}
-              convertedAmount={conversion.convertedAmount}
-              toCurrencyTitle={toCurrency.title}
-              updatedAt={conversion.updatedAt}
+              amount={amount}
+              fromCurrencyName={fromCurrency.name}
+              convertedAmount={convertedAmount}
+              toCurrencyName={toCurrency.name}
+              updatedAt={priceChange.dateTime}
             />
 
             <div className={styles.fields}>
               <CurrencyInput
                 amountLabel="Сколько отдаёте"
                 currencyLabel="Валюта, которую отдаёте"
-                amount={conversion.amount}
-                currencyCode={fromCurrency.code}
-                currencies={currencies}
+                amount={amount}
+                currencyCode={fromCode}
+                currencies={getAvailableCurrencies(currencies, toCode)}
+                onCurrencyChange={setFromCode}
+                onAmountChange={handleAmountChange}
               />
+
+              <div className={styles.swap}>
+                <SwapButton onClick={handleSwap} />
+              </div>
 
               <CurrencyInput
                 amountLabel="Сколько получаете"
                 currencyLabel="Валюта, которую получаете"
-                amount={conversion.convertedAmount}
-                currencyCode={toCurrency.code}
-                currencies={currencies}
+                amount={convertedAmount}
+                currencyCode={toCode}
+                currencies={getAvailableCurrencies(currencies, fromCode)}
+                onCurrencyChange={setToCode}
               />
             </div>
 
@@ -56,11 +95,15 @@ export const App = () => {
             ranges={chartRanges}
             activeRange={activeChartRange}
             imageSrc={chartImage}
-            imageAlt={`График курса ${fromCurrency.code}/${toCurrency.code}`}
+            imageAlt={`График курса ${fromCode}/${toCode}`}
           />
         </div>
 
-        <MoreAbout fromCurrency={fromCurrency} toCurrency={toCurrency} />
+        {/*
+          Смена пары меняет key, React пересоздаёт MoreAbout, и его open/closed сбрасывается сам.
+          Если делать через состояние в App, то App знать про внутренности блока описания
+        */}
+        <MoreAbout key={`${fromCode}-${toCode}`} fromCurrency={fromCurrency} toCurrency={toCurrency} />
       </ConverterCard>
     </main>
   );

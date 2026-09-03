@@ -2,10 +2,10 @@ import styles from './ConversionResult.module.scss';
 
 type ConversionResultProps = {
   amount: string;
-  fromCurrencyTitle: string;
+  fromCurrencyName: string;
   convertedAmount: string;
-  toCurrencyTitle: string;
-  updatedAt: Date;
+  toCurrencyName: string;
+  updatedAt: string;
 };
 
 const dateTimeFormatter = new Intl.DateTimeFormat('en-GB', {
@@ -22,16 +22,16 @@ const dateTimeFormatter = new Intl.DateTimeFormat('en-GB', {
 
 export const ConversionResult = ({
   amount,
-  fromCurrencyTitle,
+  fromCurrencyName,
   convertedAmount,
-  toCurrencyTitle,
+  toCurrencyName,
   updatedAt
 }: ConversionResultProps) => {
   return (
     <div className={styles.result}>
-      <p className={styles.source}>{`${amount} ${fromCurrencyTitle} is`}</p>
-      <p className={styles.converted}>{`${convertedAmount} ${toCurrencyTitle}`}</p>
-      <p className={styles.updated}>{dateTimeFormatter.format(updatedAt)}</p>
+      <p className={styles.source}>{`${amount} ${fromCurrencyName} is`}</p>
+      <p className={styles.converted}>{`${convertedAmount} ${toCurrencyName}`}</p>
+      <p className={styles.updated}>{dateTimeFormatter.format(new Date(updatedAt))}</p>
     </div>
   );
 };

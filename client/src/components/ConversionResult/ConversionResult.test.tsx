@@ -6,14 +6,14 @@ test('renders the source amount, the converted amount and the rate timestamp', (
   render(
     <ConversionResult
       amount="1"
-      fromCurrencyTitle="Polish zloty"
-      convertedAmount="0.99"
-      toCurrencyTitle="Japanese yen"
-      updatedAt={new Date('2026-04-03T10:35:00Z')}
+      fromCurrencyName="Polish zloty"
+      convertedAmount="36.05"
+      toCurrencyName="Japanese yen"
+      updatedAt="2026-04-27T09:30:00.000Z"
     />
   );
 
   expect(screen.getByText('1 Polish zloty is')).toBeInTheDocument();
-  expect(screen.getByText('0.99 Japanese yen')).toBeInTheDocument();
-  expect(screen.getByText('Fri, 03 Apr 2026, 10:35 UTC')).toBeInTheDocument();
+  expect(screen.getByText('36.05 Japanese yen')).toBeInTheDocument();
+  expect(screen.getByText('Mon, 27 Apr 2026, 09:30 UTC')).toBeInTheDocument();
 });

@@ -1,10 +1,8 @@
-export const conversion = {
-  amount: '1',
-  fromCode: 'PLN',
-  convertedAmount: '0.99',
-  toCode: 'JPY',
-  updatedAt: new Date('2026-04-03T10:35:00Z')
-};
+export const defaultAmount = '1';
+
+export const defaultFromCode = 'PLN';
+
+export const defaultToCode = 'JPY';
 
 export const savedFilters = ['PLN / CAD', 'PLN / JPY'];
 

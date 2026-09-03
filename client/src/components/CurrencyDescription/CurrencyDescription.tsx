@@ -5,11 +5,13 @@ type CurrencyDescriptionProps = {
   currency: Currency;
 };
 
+const DESCRIPTION_FALLBACK = 'There is no description for this currency yet.';
+
 export const CurrencyDescription = ({ currency }: CurrencyDescriptionProps) => {
   return (
     <article className={styles.description}>
-      <h2 className={styles.title}>{`${currency.title} - ${currency.code} - ${currency.symbol}`}</h2>
-      <p className={styles.text}>{currency.description}</p>
+      <h2 className={styles.title}>{`${currency.name} - ${currency.code} - ${currency.symbol}`}</h2>
+      <p className={styles.text}>{currency.description || DESCRIPTION_FALLBACK}</p>
     </article>
   );
 };

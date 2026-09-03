@@ -1,3 +1,5 @@
+import type { ChangeEvent } from 'react';
+
 import type { Currency } from '../../types/currency';
 import styles from './CurrencyInput.module.scss';
 
@@ -7,9 +9,27 @@ type CurrencyInputProps = {
   amount: string;
   currencyCode: string;
   currencies: Currency[];
+  onCurrencyChange: (currencyCode: string) => void;
+  onAmountChange?: (amount: string) => void;
 };
 
-export const CurrencyInput = ({ amountLabel, currencyLabel, amount, currencyCode, currencies }: CurrencyInputProps) => {
+export const CurrencyInput = ({
+  amountLabel,
+  currencyLabel,
+  amount,
+  currencyCode,
+  currencies,
+  onCurrencyChange,
+  onAmountChange
+}: CurrencyInputProps) => {
+  const handleAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
+    onAmountChange?.(event.target.value);
+  };
+
+  const handleCurrencyChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    onCurrencyChange(event.target.value);
+  };
+
   return (
     <div className={styles.field}>
       <input
@@ -18,10 +38,16 @@ export const CurrencyInput = ({ amountLabel, currencyLabel, amount, currencyCode
         inputMode="decimal"
         aria-label={amountLabel}
         value={amount}
-        readOnly
+        readOnly={!onAmountChange}
+        onChange={handleAmountChange}
       />
 
-      <select className={styles.currency} aria-label={currencyLabel} value={currencyCode} disabled>
+      <select
+        className={styles.currency}
+        aria-label={currencyLabel}
+        value={currencyCode}
+        onChange={handleCurrencyChange}
+      >
         {currencies.map((currency) => (
           <option key={currency.code} value={currency.code}>
             {currency.code}
