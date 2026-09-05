@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { currencies } from '../../mocks/currencies';
 import { CurrencyInput } from './CurrencyInput';
@@ -12,6 +13,7 @@ test('renders the given amount and the selected currency', () => {
       currencyCode="PLN"
       currencies={currencies}
       onCurrencyChange={() => {}}
+      onAmountChange={() => {}}
     />
   );
 
@@ -28,6 +30,7 @@ test('renders every given currency as an option', () => {
       currencyCode="PLN"
       currencies={currencies}
       onCurrencyChange={() => {}}
+      onAmountChange={() => {}}
     />
   );
 
@@ -36,7 +39,8 @@ test('renders every given currency as an option', () => {
   expect(options.map((option) => option.textContent)).toEqual(currencies.map((currency) => currency.code));
 });
 
-test('calls onAmountChange when the amount is typed', () => {
+test('calls onAmountChange when the amount is typed', async () => {
+  const user = userEvent.setup();
   const handleAmountChange = vi.fn();
 
   render(
@@ -51,12 +55,13 @@ test('calls onAmountChange when the amount is typed', () => {
     />
   );
 
-  fireEvent.change(screen.getByLabelText('Сколько отдаёте'), { target: { value: '12' } });
+  await user.type(screen.getByLabelText('Сколько отдаёте'), '2');
 
   expect(handleAmountChange).toHaveBeenCalledWith('12');
 });
 
-test('calls onCurrencyChange when another currency is selected', () => {
+test('calls onCurrencyChange when another currency is selected', async () => {
+  const user = userEvent.setup();
   const handleCurrencyChange = vi.fn();
 
   render(
@@ -67,25 +72,11 @@ test('calls onCurrencyChange when another currency is selected', () => {
       currencyCode="PLN"
       currencies={currencies}
       onCurrencyChange={handleCurrencyChange}
+      onAmountChange={() => {}}
     />
   );
 
-  fireEvent.change(screen.getByLabelText('Валюта, которую отдаёте'), { target: { value: 'CAD' } });
+  await user.selectOptions(screen.getByLabelText('Валюта, которую отдаёте'), 'CAD');
 
   expect(handleCurrencyChange).toHaveBeenCalledWith('CAD');
-});
-
-test('keeps the result field read only', () => {
-  render(
-    <CurrencyInput
-      amountLabel="Сколько получаете"
-      currencyLabel="Валюта, которую получаете"
-      amount="36.05"
-      currencyCode="JPY"
-      currencies={currencies}
-      onCurrencyChange={() => {}}
-    />
-  );
-
-  expect(screen.getByLabelText('Сколько получаете')).toHaveAttribute('readonly');
 });

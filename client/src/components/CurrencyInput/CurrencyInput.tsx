@@ -10,7 +10,7 @@ type CurrencyInputProps = {
   currencyCode: string;
   currencies: Currency[];
   onCurrencyChange: (currencyCode: string) => void;
-  onAmountChange?: (amount: string) => void;
+  onAmountChange: (amount: string) => void;
 };
 
 export const CurrencyInput = ({
@@ -23,7 +23,7 @@ export const CurrencyInput = ({
   onAmountChange
 }: CurrencyInputProps) => {
   const handleAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onAmountChange?.(event.target.value);
+    onAmountChange(event.target.value);
   };
 
   const handleCurrencyChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -38,7 +38,6 @@ export const CurrencyInput = ({
         inputMode="decimal"
         aria-label={amountLabel}
         value={amount}
-        readOnly={!onAmountChange}
         onChange={handleAmountChange}
       />
 

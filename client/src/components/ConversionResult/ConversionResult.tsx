@@ -5,7 +5,7 @@ type ConversionResultProps = {
   fromCurrencyName: string;
   convertedAmount: string;
   toCurrencyName: string;
-  updatedAt: string;
+  updatedAt: Date;
 };
 
 const dateTimeFormatter = new Intl.DateTimeFormat('en-GB', {
@@ -31,7 +31,7 @@ export const ConversionResult = ({
     <div className={styles.result}>
       <p className={styles.source}>{`${amount} ${fromCurrencyName} is`}</p>
       <p className={styles.converted}>{`${convertedAmount} ${toCurrencyName}`}</p>
-      <p className={styles.updated}>{dateTimeFormatter.format(new Date(updatedAt))}</p>
+      <p className={styles.updated}>{dateTimeFormatter.format(updatedAt)}</p>
     </div>
   );
 };

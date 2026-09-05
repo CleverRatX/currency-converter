@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
+import { getCurrency } from '../../logic/currency';
 import { currencies } from '../../mocks/currencies';
-import { getCurrency } from '../../utils/currency';
 import { CurrencyDescription } from './CurrencyDescription';
 
 const pln = getCurrency(currencies, 'PLN');

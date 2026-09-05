@@ -1,6 +1,6 @@
-import type { PriceChanges } from '../types/priceChange';
+import type { PriceChangesDto } from '../api/types';
 
-export const priceChanges: PriceChanges = {
+export const priceChanges: PriceChangesDto = {
   CAD: {
     PLN: {
       purchasedCurrencyCode: 'CAD',

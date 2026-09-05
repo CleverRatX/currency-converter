@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import type { Currency } from '../../types/currency';
+import { Button } from '../Button/Button';
 import { CurrencyDescription } from '../CurrencyDescription/CurrencyDescription';
 import styles from './MoreAbout.module.scss';
 
@@ -19,7 +20,7 @@ export const MoreAbout = ({ fromCurrency, toCurrency }: MoreAboutProps) => {
   return (
     <section className={styles.about}>
       <div className={styles.header}>
-        <button type="button" className={styles.toggle} aria-expanded={isOpen} onClick={handleToggle}>
+        <Button kind="muted" className={styles.toggle} aria-expanded={isOpen} onClick={handleToggle}>
           {`${fromCurrency.code}/${toCurrency.code}: about`}
 
           <svg
@@ -38,7 +39,7 @@ export const MoreAbout = ({ fromCurrency, toCurrency }: MoreAboutProps) => {
               strokeLinejoin="round"
             />
           </svg>
-        </button>
+        </Button>
 
         <span className={styles.line} aria-hidden="true" />
       </div>

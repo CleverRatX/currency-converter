@@ -1,5 +1,4 @@
 $toggle-min-inline-size: 215px;
-$toggle-block-size: 50px;
 $line-color: #d9d9d9;
 
 .about {
@@ -15,26 +14,14 @@ $line-color: #d9d9d9;
 }
 
 .toggle {
-  display: inline-flex;
   flex: none;
-  gap: 10px;
   justify-content: space-between;
-  align-items: center;
 
   min-inline-size: $toggle-min-inline-size;
-  block-size: $toggle-block-size;
   padding-inline: 23px 20px;
 
-  background: $line-color;
-  border: none;
-  border-radius: 10px;
-
-  color: #000;
-  font: inherit;
   font-size: 20px;
   line-height: 24px;
-
-  cursor: pointer;
 }
 
 .arrow {

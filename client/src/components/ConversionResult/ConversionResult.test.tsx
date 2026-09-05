@@ -9,7 +9,7 @@ test('renders the source amount, the converted amount and the rate timestamp', (
       fromCurrencyName="Polish zloty"
       convertedAmount="36.05"
       toCurrencyName="Japanese yen"
-      updatedAt="2026-04-27T09:30:00.000Z"
+      updatedAt={new Date('2026-04-27T09:30:00.000Z')}
     />
   );
 

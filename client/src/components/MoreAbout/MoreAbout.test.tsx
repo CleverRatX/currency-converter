@@ -1,7 +1,8 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { currencies } from '../../mocks/currencies';
-import { getCurrency } from '../../utils/currency';
+import { getCurrency } from '../../logic/currency';
 import { MoreAbout } from './MoreAbout';
 
 const pln = getCurrency(currencies, 'PLN');
@@ -38,17 +39,19 @@ test('renders the descriptions of another pair when that pair is given', () => {
   expect(screen.queryByText(pln.description)).not.toBeInTheDocument();
 });
 
-test('hides and shows the descriptions by the toggle', () => {
+test('hides and shows the descriptions by the toggle', async () => {
+  const user = userEvent.setup();
+
   render(<MoreAbout fromCurrency={pln} toCurrency={jpy} />);
 
   const toggle = screen.getByRole('button', { name: /PLN\/JPY: about/ });
 
-  fireEvent.click(toggle);
+  await user.click(toggle);
 
   expect(toggle).toHaveAttribute('aria-expanded', 'false');
   expect(screen.queryByText(pln.description)).not.toBeInTheDocument();
 
-  fireEvent.click(toggle);
+  await user.click(toggle);
 
   expect(toggle).toHaveAttribute('aria-expanded', 'true');
   expect(screen.getByText(pln.description)).toBeInTheDocument();

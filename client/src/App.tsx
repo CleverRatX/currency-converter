@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
+import { getCurrencies, getPriceChanges } from './api/api';
 import chartImage from './assets/chart.png';
 import styles from './App.module.scss';
+import { convertAmount, getAvailableCurrencies, getPriceChange, isAmountInputValid } from './App.logic';
 import { ConversionResult } from './components/ConversionResult/ConversionResult';
 import { ConverterCard } from './components/ConverterCard/ConverterCard';
 import { CurrencyInput } from './components/CurrencyInput/CurrencyInput';
@@ -19,13 +21,16 @@ import {
   defaultToCode,
   savedFilters
 } from './data/constants';
-import { currencies } from './mocks/currencies';
-import { priceChanges } from './mocks/priceChanges';
-import { convertAmount, isAmountInputValid } from './utils/amount';
-import { getAvailableCurrencies, getCurrency, getPriceChange } from './utils/currency';
+import { getCurrency } from './logic/currency';
+
+type EditedField = 'from' | 'to';
 
 export const App = () => {
+  const currencies = useMemo(() => getCurrencies(), []);
+  const priceChanges = useMemo(() => getPriceChanges(), []);
+
   const [amount, setAmount] = useState(defaultAmount);
+  const [editedField, setEditedField] = useState<EditedField>('from');
   const [fromCode, setFromCode] = useState(defaultFromCode);
   const [toCode, setToCode] = useState(defaultToCode);
 
@@ -33,12 +38,25 @@ export const App = () => {
   const toCurrency = getCurrency(currencies, toCode);
 
   const priceChange = getPriceChange(priceChanges, fromCode, toCode);
-  const convertedAmount = convertAmount(amount, priceChange.price);
+  const reversePriceChange = getPriceChange(priceChanges, toCode, fromCode);
 
-  const handleAmountChange = (nextAmount: string) => {
+  const isFromEdited = editedField === 'from';
+  const fromAmount = isFromEdited ? amount : convertAmount(amount, reversePriceChange.price);
+  const toAmount = isFromEdited ? convertAmount(amount, priceChange.price) : amount;
+
+  const changeAmount = (nextAmount: string, nextEditedField: EditedField) => {
     if (isAmountInputValid(nextAmount)) {
       setAmount(nextAmount);
+      setEditedField(nextEditedField);
     }
+  };
+
+  const handleFromAmountChange = (nextAmount: string) => {
+    changeAmount(nextAmount, 'from');
+  };
+
+  const handleToAmountChange = (nextAmount: string) => {
+    changeAmount(nextAmount, 'to');
   };
 
   const handleSwap = () => {
@@ -54,9 +72,9 @@ export const App = () => {
         <div className={styles.top}>
           <div className={styles.panel}>
             <ConversionResult
-              amount={amount}
+              amount={fromAmount}
               fromCurrencyName={fromCurrency.name}
-              convertedAmount={convertedAmount}
+              convertedAmount={toAmount}
               toCurrencyName={toCurrency.name}
               updatedAt={priceChange.dateTime}
             />
@@ -65,11 +83,11 @@ export const App = () => {
               <CurrencyInput
                 amountLabel="Сколько отдаёте"
                 currencyLabel="Валюта, которую отдаёте"
-                amount={amount}
+                amount={fromAmount}
                 currencyCode={fromCode}
                 currencies={getAvailableCurrencies(currencies, toCode)}
                 onCurrencyChange={setFromCode}
-                onAmountChange={handleAmountChange}
+                onAmountChange={handleFromAmountChange}
               />
 
               <div className={styles.swap}>
@@ -79,10 +97,11 @@ export const App = () => {
               <CurrencyInput
                 amountLabel="Сколько получаете"
                 currencyLabel="Валюта, которую получаете"
-                amount={convertedAmount}
+                amount={toAmount}
                 currencyCode={toCode}
                 currencies={getAvailableCurrencies(currencies, fromCode)}
                 onCurrencyChange={setToCode}
+                onAmountChange={handleToAmountChange}
               />
             </div>
 

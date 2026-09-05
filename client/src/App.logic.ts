@@ -1,14 +1,15 @@
-import type { Currency } from '../types/currency';
-import type { PriceChange, PriceChanges } from '../types/priceChange';
+import type { Currency } from './types/currency';
+import type { PriceChange, PriceChanges } from './types/priceChange';
+import { formatNumber, parseNumber } from './utils/formatter';
 
-export const getCurrency = (currencies: Currency[], code: string): Currency => {
-  const currency = currencies.find((item) => item.code === code);
+const amountPattern = /^\d*([.,]\d*)?$/;
 
-  if (!currency) {
-    throw new Error(`Неизвестный код валюты: ${code}`);
-  }
+export const isAmountInputValid = (value: string): boolean => {
+  return amountPattern.test(value);
+};
 
-  return currency;
+export const convertAmount = (amount: string, price: number): string => {
+  return formatNumber(parseNumber(amount) * price);
 };
 
 export const getPriceChange = (priceChanges: PriceChanges, fromCode: string, toCode: string): PriceChange => {
