@@ -68,11 +68,4 @@ $arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width=
   &:focus-visible {
     outline: none;
   }
-
-  &:disabled {
-    opacity: 1;
-    color: $text-color;
-
-    -webkit-text-fill-color: $text-color;
-  }
 }

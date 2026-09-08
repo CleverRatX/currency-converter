@@ -36,6 +36,11 @@ $panel-inline-size: 410px;
   inline-size: 100%;
 }
 
+.swap {
+  display: flex;
+  justify-content: center;
+}
+
 .visually-hidden {
   position: absolute;
 

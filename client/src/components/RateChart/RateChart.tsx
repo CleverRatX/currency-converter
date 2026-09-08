@@ -1,4 +1,4 @@
-import { Chip } from '../Chip/Chip';
+import { Button } from '../Button/Button';
 import styles from './RateChart.module.scss';
 
 type RateChartProps = {
@@ -12,11 +12,17 @@ export const RateChart = ({ ranges, activeRange, imageSrc, imageAlt }: RateChart
   return (
     <div className={styles.chart}>
       <ul className={styles.ranges}>
-        {ranges.map((range) => (
-          <li key={range}>
-            <Chip isActive={range === activeRange}>{range}</Chip>
-          </li>
-        ))}
+        {ranges.map((range) => {
+          const isActive = range === activeRange;
+
+          return (
+            <li key={range}>
+              <Button size="small" kind={isActive ? 'accent' : 'muted'} aria-pressed={isActive}>
+                {range}
+              </Button>
+            </li>
+          );
+        })}
       </ul>
 
       <img className={styles.image} src={imageSrc} alt={imageAlt} />

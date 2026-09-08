@@ -1,35 +1,74 @@
-$button-min-inline-size: 200px;
-$button-block-size: 50px;
+$large-min-inline-size: 200px;
+$large-block-size: 50px;
+$medium-block-size: 40px;
+$small-min-inline-size: 95px;
+$small-block-size: 30px;
+$border-color: #d9d9d9;
 
-@mixin button-base {
+.button {
   display: inline-flex;
   justify-content: center;
   align-items: center;
 
-  min-inline-size: $button-min-inline-size;
-  block-size: $button-block-size;
-  padding-inline: 10px;
-
   border: none;
   border-radius: 10px;
 
-  color: #fff;
+  color: #000;
   font: inherit;
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 27px;
 
   cursor: pointer;
 }
 
-.primary {
-  @include button-base();
+.large {
+  min-inline-size: $large-min-inline-size;
+  block-size: $large-block-size;
+  padding-inline: 10px;
 
+  font-size: 22px;
+  line-height: 27px;
+}
+
+.medium {
+  block-size: $medium-block-size;
+  padding-inline: 18px;
+  font-size: 18px;
+  line-height: 22px;
+}
+
+.small {
+  min-inline-size: $small-min-inline-size;
+  block-size: $small-block-size;
+  padding-inline: 10px;
+
+  font-size: 15px;
+  line-height: 18px;
+}
+
+.primary {
   background: #3f66bf;
+  color: #fff;
+  font-weight: 700;
 }
 
 .danger {
-  @include button-base();
-
   background: #fa3a3a;
+  color: #fff;
+  font-weight: 700;
+}
+
+.accent {
+  background: #c4d7ff;
+}
+
+.muted {
+  background: #d9d9d9;
+}
+
+.outlined {
+  background: #fff;
+  border: 1px solid $border-color;
+
+  &:hover {
+    border-color: #9e9e9e;
+  }
 }
