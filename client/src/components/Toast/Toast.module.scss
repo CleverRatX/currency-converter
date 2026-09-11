@@ -1,0 +1,22 @@
+.toast {
+  position: fixed;
+  inset-block-start: 20px;
+  inset-inline: 20px;
+  z-index: 10;
+
+  inline-size: min(560px, calc(100% - 40px));
+  margin-block: 0;
+  margin-inline: auto;
+  padding-block: 14px;
+  padding-inline: 20px;
+
+  background: #ff696a;
+  border-radius: 30px;
+  box-shadow: 0 6px 16px rgb(0 0 0 / 20%);
+
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 22px;
+  text-align: center;
+}

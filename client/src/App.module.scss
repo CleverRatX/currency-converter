@@ -1,17 +1,4 @@
-$page-background: #ebf4fb;
 $panel-inline-size: 410px;
-
-.page {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-
-  min-block-size: 100vh;
-  padding-block: 40px;
-  padding-inline: 20px;
-
-  background: $page-background;
-}
 
 .top {
   display: flex;
@@ -39,20 +26,4 @@ $panel-inline-size: 410px;
 .swap {
   display: flex;
   justify-content: center;
-}
-
-.visually-hidden {
-  position: absolute;
-
-  inline-size: 1px;
-  block-size: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-
-  border: 0;
-
-  white-space: nowrap;
-
-  clip-path: inset(50%);
 }

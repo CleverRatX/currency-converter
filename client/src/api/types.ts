@@ -12,4 +12,6 @@ export type PriceChangeDto = {
   dateTime: string;
 };
 
-export type PriceChangesDto = Record<string, Record<string, PriceChangeDto>>;
+export type ErrorResponseDto = {
+  message: string;
+};
