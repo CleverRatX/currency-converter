@@ -1,134 +1,34 @@
-import type { PriceChangesDto } from '../api/types';
+import type { PriceChangeDto } from '../api/types';
 
-export const priceChanges: PriceChangesDto = {
-  CAD: {
-    PLN: {
-      purchasedCurrencyCode: 'CAD',
-      paymentCurrencyCode: 'PLN',
-      price: 2.95,
-      dateTime: '2026-04-27T09:00:00.000Z'
-    },
-    AUD: {
-      purchasedCurrencyCode: 'CAD',
-      paymentCurrencyCode: 'AUD',
-      price: 1.11,
-      dateTime: '2026-04-27T09:05:00.000Z'
-    },
-    JPY: {
-      purchasedCurrencyCode: 'CAD',
-      paymentCurrencyCode: 'JPY',
-      price: 106.4,
-      dateTime: '2026-04-27T09:10:00.000Z'
-    },
-    ZAR: {
-      purchasedCurrencyCode: 'CAD',
-      paymentCurrencyCode: 'ZAR',
-      price: 13.82,
-      dateTime: '2026-04-27T09:15:00.000Z'
-    }
-  },
-  PLN: {
-    CAD: {
-      purchasedCurrencyCode: 'PLN',
-      paymentCurrencyCode: 'CAD',
-      price: 0.34,
-      dateTime: '2026-04-27T09:20:00.000Z'
-    },
-    AUD: {
-      purchasedCurrencyCode: 'PLN',
-      paymentCurrencyCode: 'AUD',
-      price: 0.38,
-      dateTime: '2026-04-27T09:25:00.000Z'
-    },
-    JPY: {
-      purchasedCurrencyCode: 'PLN',
-      paymentCurrencyCode: 'JPY',
-      price: 36.05,
-      dateTime: '2026-04-27T09:30:00.000Z'
-    },
-    ZAR: {
-      purchasedCurrencyCode: 'PLN',
-      paymentCurrencyCode: 'ZAR',
-      price: 4.69,
-      dateTime: '2026-04-27T09:35:00.000Z'
-    }
-  },
-  AUD: {
-    CAD: {
-      purchasedCurrencyCode: 'AUD',
-      paymentCurrencyCode: 'CAD',
-      price: 0.9,
-      dateTime: '2026-04-27T09:40:00.000Z'
-    },
-    PLN: {
-      purchasedCurrencyCode: 'AUD',
-      paymentCurrencyCode: 'PLN',
-      price: 2.66,
-      dateTime: '2026-04-27T09:45:00.000Z'
-    },
-    JPY: {
-      purchasedCurrencyCode: 'AUD',
-      paymentCurrencyCode: 'JPY',
-      price: 95.77,
-      dateTime: '2026-04-27T09:50:00.000Z'
-    },
-    ZAR: {
-      purchasedCurrencyCode: 'AUD',
-      paymentCurrencyCode: 'ZAR',
-      price: 12.45,
-      dateTime: '2026-04-27T09:55:00.000Z'
-    }
-  },
-  JPY: {
-    CAD: {
-      purchasedCurrencyCode: 'JPY',
-      paymentCurrencyCode: 'CAD',
-      price: 0.0094,
-      dateTime: '2026-04-27T10:00:00.000Z'
-    },
-    PLN: {
-      purchasedCurrencyCode: 'JPY',
-      paymentCurrencyCode: 'PLN',
-      price: 0.0277,
-      dateTime: '2026-04-27T10:05:00.000Z'
-    },
-    AUD: {
-      purchasedCurrencyCode: 'JPY',
-      paymentCurrencyCode: 'AUD',
-      price: 0.0104,
-      dateTime: '2026-04-27T10:10:00.000Z'
-    },
-    ZAR: {
-      purchasedCurrencyCode: 'JPY',
-      paymentCurrencyCode: 'ZAR',
-      price: 0.13,
-      dateTime: '2026-04-27T10:15:00.000Z'
-    }
-  },
-  ZAR: {
-    CAD: {
-      purchasedCurrencyCode: 'ZAR',
-      paymentCurrencyCode: 'CAD',
-      price: 0.072,
-      dateTime: '2026-04-27T10:20:00.000Z'
-    },
-    PLN: {
-      purchasedCurrencyCode: 'ZAR',
-      paymentCurrencyCode: 'PLN',
-      price: 0.213,
-      dateTime: '2026-04-27T10:25:00.000Z'
-    },
-    AUD: {
-      purchasedCurrencyCode: 'ZAR',
-      paymentCurrencyCode: 'AUD',
-      price: 0.08,
-      dateTime: '2026-04-27T10:30:00.000Z'
-    },
-    JPY: {
-      purchasedCurrencyCode: 'ZAR',
-      paymentCurrencyCode: 'JPY',
-      price: 7.69,
-      dateTime: '2026-04-27T10:35:00.000Z'
-    }
-  }
+const testPrices: Record<string, number> = {
+  'PLN/CAD': 0.34,
+  'PLN/AUD': 0.38,
+  'PLN/JPY': 36.05,
+  'PLN/ZAR': 4.69,
+  'JPY/PLN': 0.0277,
+  'JPY/CAD': 0.0094,
+  'CAD/PLN': 2.95,
+  'CAD/JPY': 106.4
+};
+
+const defaultPrice = 1;
+
+const historyLength = 3;
+
+const historyStepMilliseconds = 10_000;
+
+const getTestPrice = (purchasedCurrency: string, paymentCurrency: string): number => {
+  return testPrices[`${purchasedCurrency}/${paymentCurrency}`] ?? defaultPrice;
+};
+
+export const createPriceChangeDtos = (purchasedCurrency: string, paymentCurrency: string): PriceChangeDto[] => {
+  const price = getTestPrice(purchasedCurrency, paymentCurrency);
+  const startTime = Date.parse('2026-04-27T09:00:00.000Z');
+
+  return Array.from({ length: historyLength }, (_, index) => ({
+    purchasedCurrencyCode: purchasedCurrency,
+    paymentCurrencyCode: paymentCurrency,
+    price: index === historyLength - 1 ? price : price / 2,
+    dateTime: new Date(startTime + index * historyStepMilliseconds).toISOString()
+  }));
 };

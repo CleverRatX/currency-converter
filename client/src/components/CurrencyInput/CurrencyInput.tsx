@@ -1,4 +1,4 @@
-import type { ChangeEvent } from 'react';
+import { type ChangeEvent, useEffect, useRef } from 'react';
 
 import type { Currency } from '../../types/currency';
 import styles from './CurrencyInput.module.scss';
@@ -6,24 +6,48 @@ import styles from './CurrencyInput.module.scss';
 type CurrencyInputProps = {
   amountLabel: string;
   currencyLabel: string;
-  amount: string;
   currencyCode: string;
   currencies: Currency[];
-  onCurrencyChange: (currencyCode: string) => void;
+  amount?: string;
+  defaultAmount?: string;
+  isAmountAllowed: (amount: string) => boolean;
   onAmountChange: (amount: string) => void;
+  onCurrencyChange: (currencyCode: string) => void;
 };
 
 export const CurrencyInput = ({
   amountLabel,
   currencyLabel,
-  amount,
   currencyCode,
   currencies,
-  onCurrencyChange,
-  onAmountChange
+  amount,
+  defaultAmount,
+  isAmountAllowed,
+  onAmountChange,
+  onCurrencyChange
 }: CurrencyInputProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const input = inputRef.current;
+
+    if (input !== null && defaultAmount !== undefined && input.value !== defaultAmount) {
+      input.value = defaultAmount;
+    }
+  }, [defaultAmount]);
+
   const handleAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onAmountChange(event.target.value);
+    const nextAmount = event.target.value;
+
+    if (!isAmountAllowed(nextAmount)) {
+      if (defaultAmount !== undefined) {
+        event.target.value = defaultAmount;
+      }
+
+      return;
+    }
+
+    onAmountChange(nextAmount);
   };
 
   const handleCurrencyChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -33,11 +57,13 @@ export const CurrencyInput = ({
   return (
     <div className={styles.field}>
       <input
+        ref={inputRef}
         className={styles.amount}
         type="text"
         inputMode="decimal"
         aria-label={amountLabel}
         value={amount}
+        defaultValue={defaultAmount}
         onChange={handleAmountChange}
       />
 

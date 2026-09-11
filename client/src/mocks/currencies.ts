@@ -1,6 +1,7 @@
+import { toCurrencies } from '../api/mappers';
 import type { CurrencyDto } from '../api/types';
 
-export const currencies: CurrencyDto[] = [
+export const currencyDtos: CurrencyDto[] = [
   {
     code: 'CAD',
     description:
@@ -37,3 +38,5 @@ export const currencies: CurrencyDto[] = [
     symbol: 'R'
   }
 ];
+
+export const currencies = toCurrencies(currencyDtos);

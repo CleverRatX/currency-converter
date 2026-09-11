@@ -1,32 +1,64 @@
-import { currencies } from '../mocks/currencies';
-import { priceChanges } from '../mocks/priceChanges';
+import { apiBaseUrl } from '../data/constants';
 import type { Currency } from '../types/currency';
-import type { PriceChange, PriceChanges } from '../types/priceChange';
-import type { PriceChangeDto } from './types';
+import type { PriceChange } from '../types/priceChange';
+import { ApiError } from './errors';
+import { toCurrencies, toPriceChanges } from './mappers';
+import type { CurrencyDto, ErrorResponseDto, PriceChangeDto } from './types';
 
-const toPriceChange = (priceChangeDto: PriceChangeDto): PriceChange => {
-  return {
-    purchasedCurrencyCode: priceChangeDto.purchasedCurrencyCode,
-    paymentCurrencyCode: priceChangeDto.paymentCurrencyCode,
-    price: priceChangeDto.price,
-    dateTime: new Date(priceChangeDto.dateTime)
-  };
+type GetPriceChangesParams = {
+  purchasedCurrency: string;
+  paymentCurrency: string;
+  fromDateTime: Date;
+  toDateTime?: Date;
 };
 
-export const getCurrencies = (): Currency[] => {
-  return currencies;
+const networkErrorMessage = 'Cannot reach the server. Check that the backend is running and try again.';
+
+const unexpectedResponseMessage = 'The server returned an unexpected response.';
+
+const getErrorMessage = async (response: Response): Promise<string> => {
+  const errorDto = (await response.json().catch(() => null)) as ErrorResponseDto | null;
+
+  return errorDto?.message ?? `The server responded with ${response.status}`;
 };
 
-export const getPriceChanges = (): PriceChanges => {
-  return Object.fromEntries(
-    Object.entries(priceChanges).map(([purchasedCurrencyCode, priceChangesDto]) => [
-      purchasedCurrencyCode,
-      Object.fromEntries(
-        Object.entries(priceChangesDto).map(([paymentCurrencyCode, priceChangeDto]) => [
-          paymentCurrencyCode,
-          toPriceChange(priceChangeDto)
-        ])
-      )
-    ])
-  );
+const requestArray = async <TDto>(path: string, searchParams?: URLSearchParams): Promise<TDto[]> => {
+  const query = searchParams ? `?${searchParams.toString()}` : '';
+  let response: Response;
+
+  try {
+    response = await fetch(`${apiBaseUrl}${path}${query}`);
+  } catch {
+    throw new ApiError(networkErrorMessage);
+  }
+
+  if (!response.ok) {
+    throw new ApiError(await getErrorMessage(response));
+  }
+
+  const body = (await response.json().catch(() => null)) as unknown;
+
+  if (!Array.isArray(body)) {
+    throw new ApiError(unexpectedResponseMessage);
+  }
+
+  return body as TDto[];
+};
+
+export const getCurrencies = async (): Promise<Currency[]> => {
+  return toCurrencies(await requestArray<CurrencyDto>('/Currency'));
+};
+
+export const getPriceChanges = async (params: GetPriceChangesParams): Promise<PriceChange[]> => {
+  const searchParams = new URLSearchParams({
+    purchasedCurrency: params.purchasedCurrency,
+    paymentCurrency: params.paymentCurrency,
+    fromDateTime: params.fromDateTime.toISOString()
+  });
+
+  if (params.toDateTime) {
+    searchParams.set('toDateTime', params.toDateTime.toISOString());
+  }
+
+  return toPriceChanges(await requestArray<PriceChangeDto>('/prices', searchParams));
 };

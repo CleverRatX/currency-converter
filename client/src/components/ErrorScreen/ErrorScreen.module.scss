@@ -1,0 +1,30 @@
+$message-inline-size: 337px;
+$message-block-size: 87px;
+
+.screen {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  inline-size: $message-inline-size;
+  max-inline-size: 100%;
+  min-block-size: $message-block-size;
+  margin: 0;
+  padding-inline: 40px;
+
+  background: #ff696a;
+  border-radius: 30px;
+
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 27px;
+  text-align: center;
+}

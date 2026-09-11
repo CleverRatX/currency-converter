@@ -1,0 +1,29 @@
+$page-background: #ebf4fb;
+
+.page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  min-block-size: 100vh;
+  padding-block: 40px;
+  padding-inline: 20px;
+
+  background: $page-background;
+}
+
+.visually-hidden {
+  position: absolute;
+
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+
+  border: 0;
+
+  white-space: nowrap;
+
+  clip-path: inset(50%);
+}
